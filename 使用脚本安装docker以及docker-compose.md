@@ -44,3 +44,13 @@ curl -L https://github.com/docker/compose/releases/download/1.17.1/docker-compos
 chmod +x /usr/local/bin/docker-compose
 
 ```
+
+
+
+### 也可以使用官方脚本安装
+
+```shell
+curl -fsSL get.docker.com -o get-docker.sh
+sh get-docker.sh --mirror Aliyun
+```
+
