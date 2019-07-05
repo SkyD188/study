@@ -1,0 +1,1 @@
+oracle的分页 select * from t_demo where  ROWNUM <=10

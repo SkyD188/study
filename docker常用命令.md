@@ -15,7 +15,7 @@ exec 进入容器
 ####  容器操作
 
 ```docker
-ps
+ps （ps -a 查看所有容器）
 inspect 获取容器/镜像的元数据。
 top 查看容器中运行的进程信息，支持 ps 命令参数。
 attach
@@ -33,7 +33,7 @@ cp 复制
 images
 rmi
 tag
-build
+build 构建镜像
 history 查看指定镜像的创建历史。
 save 将指定镜像保存成 tar 归档文件。
 load 导入使用 docker save 命令导出的镜像。
@@ -75,6 +75,3 @@ docker cp docker的复制命令。可以容器复制到宿主机，也可以复�
 	none：这个模式有自己的独立的网络配置。但是不是docker提供的，需要自己手动配置
 	bridge：docker会为容器创建一个网络配置，并将docker容器链接到一个虚拟网桥上
 ```
-
-
-
