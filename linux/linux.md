@@ -12,19 +12,38 @@ centos7 查看ip的几种方式 ip addr , ifconfig , hostname -I
 
 ##### 定时任务
 
+> [计算时间网站](https://tool.lu/crontab/)
+
 ```shell
 crontab -e 创建执行定时任务的命令
 crontab -l 列出有哪些任务在执行
+cat /etc/crontab 查看官方指导的说明
+
+# 买那个了使用如下  eg：* * * * * /usr/local/dhy.sh
+# .---------------- minute (0 - 59)
+# | .------------- hour (0 - 23)
+# | | .---------- day of month (1 - 31)
+# | | | .------- month (1 - 12) OR jan,feb,mar,apr ... 月份的缩写
+# | | | | .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat 日期缩写
+# | | | | | 空一格
+# * * * * * user-name command to be executed 用户要执行的文件位置或者是命令
 ```
 
 ##### 系统级别命令
 
+> **systemctl是CentOS7的服务管理工具中主要的工具，它融合之前service和chkconfig的功能于一体。**
+
 ```shell
-命令：systemctl command name.service
-启动：service name start –> systemctl start name.service
-停止：service name stop –> systemctl stop name.service
-重启：service name restart –> systemctl restart name.service
-状态：service name status –> systemctl status name.service
+服务命令：systemctl command name.service
+服务启动：service name start –> systemctl start name.service
+服务停止：service name stop –> systemctl stop name.service
+服务重启：service name restart –> systemctl restart name.service
+服务状态：service name status –> systemctl status name.service
+服务开机启动：systemctl enable firewalld.service
+服务开机禁用：systemctl disable firewalld.service
+查看服务是否开机启动：systemctl is-enabled firewalld.service
+查看已启动的服务列表：systemctl list-unit-files | grep enabled
+查看启动失败的服务列表：systemctl --failed
 
 条件式重启(已启动才重启，否则不做任何操作)
     systemctl try-restart name.service
@@ -32,15 +51,74 @@ crontab -l 列出有哪些任务在执行
 	systemctl reload-or-try-restart name.service
 ```
 
-
-
 ##### 防火墙命令
 
+> **只需要看前三段即可，后面的命令基本用不着**
+
 ```shell
-
+防火墙基本命令（具体看系统级别命令即可）
+ 	启动： systemctl start firewalld
+    查看状态： systemctl status firewalld 
+    停止运行： systemctl stop firewalld
+    
+配置firewalld-cmd
+    查看版本： firewall-cmd --version
+    查看帮助： firewall-cmd --help
+    显示状态： firewall-cmd --state
+    查看所有打开的端口： firewall-cmd --zone=public --list-ports
+    更新防火墙规则： firewall-cmd --reload
+    更新防火墙规则，重启服务： firewall-cmd --completely-reload
+    查看已激活的Zone信息:  firewall-cmd --get-active-zones
+    查看指定接口所属区域： firewall-cmd --get-zone-of-interface=eth0
+    拒绝所有包：firewall-cmd --panic-on
+    取消拒绝状态： firewall-cmd --panic-off
+    查看是否拒绝： firewall-cmd --query-panic
+    
+防火墙开启和关闭端口（以下都是指在public的zone下的操作，不同的Zone只要改变Zone后面的值就可以）
+    添加：firewall-cmd --zone=public --add-port=80/tcp --permanent（--permanent永久生效，没有此参数重		   启后失效） 
+    重新载入：firewall-cmd --reload
+    查看：firewall-cmd --zone=public --query-port=80/tcp
+    删除：firewall-cmd --zone=public --remove-port=80/tcp --permanent
+ 
+ 								下面命令基本用不着
+ 
+防火墙信任级别 通过Zone的值指定
+    drop: 丢弃所有进入的包，而不给出任何响应 
+    block: 拒绝所有外部发起的连接，允许内部发起的连接 
+    public: 允许指定的进入连接 
+    external: 同上，对伪装的进入连接，一般用于路由转发 
+    dmz: 允许受限制的进入连接 
+    work: 允许受信任的计算机被限制的进入连接，类似 workgroup 
+    home: 同上，类似 homegroup 
+    internal: 同上，范围针对所有互联网用户 
+    trusted: 信任所有连接
+    	
+防火墙管理服务
+    以smtp服务为例， 添加到work zone
+    添加：
+    firewall-cmd --zone=work --add-service=smtp
+    查看：
+    firewall-cmd --zone=work --query-service=smtp
+    删除：
+    firewall-cmd --zone=work --remove-service=smtp
+  
+防火墙配置IP地址伪装
+    查看：
+    firewall-cmd --zone=external --query-masquerade
+    打开：
+    firewall-cmd --zone=external --add-masquerade
+    关闭：
+    firewall-cmd --zone=external --remove-masquerade
+    
+防火墙端口转发
+    打开端口转发，首先需要打开IP地址伪装 firewall-cmd --zone=external --add-masquerade
+    转发 tcp 22 端口至 3753： 
+    firewall-cmd --zone=external --add-forward-port=22:porto=tcp:toport=3753
+    转发端口数据至另一个IP的相同端口：
+    firewall-cmd --zone=external --add-forward-port=22:porto=tcp:toaddr=192.168.1.112
+    转发端口数据至另一个IP的 3753 端口：
+    firewall-cmd --zone=external --add-forward-port=22:porto=tcp:toport=3753:toaddr=192.168.1.112
 ```
-
-
 
 ##### tail cat mv
 
@@ -110,19 +188,19 @@ $NF表示最后一个字段 NF表示被分隔符切开后有多少个字段
     grep -B n "string" filename
     
 -C 显示匹配行前后的n行
-    $ grep -C n "string" filename
+    grep -C n "string" filename
    
 递归搜索：-r 搜索当前目录以及子目录下含“this”的全部文件。
-    $ grep -r "this" *
+    grep -r "this" *
 
 不匹配搜索：-v 显示不含搜索字符串“go”的行。
-    $ grep -v "go" demo_text
+    grep -v "go" demo_text
 
 统计匹配的行数：-c 统计文件中含“go”字符串的行数。
-    $ grep -c "go" filename
+    grep -c "go" filename
 
 只显示含有符串的文件的文件名：-l 显示含“this”字符串的文件的文件名。
-    $ grep -l "this" filename
+    grep -l "this" filename
 
 输出时显示行号：-n 显示含文件中含“this”字符串的行的行号。
     grep -n "this" filename
