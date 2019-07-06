@@ -75,3 +75,14 @@ docker cp docker的复制命令。可以容器复制到宿主机，也可以复�
 	none：这个模式有自己的独立的网络配置。但是不是docker提供的，需要自己手动配置
 	bridge：docker会为容器创建一个网络配置，并将docker容器链接到一个虚拟网桥上
 ```
+
+#### docker高级用法
+
+```docker
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id可直接获得容器的ip地址如：172.18.0.4
+
+显示所有容器IP地址：docker inspect --format='{{.Name}} - {{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
+
+docker container update --restart=always 容器名字
+```
+
