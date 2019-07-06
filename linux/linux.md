@@ -3,7 +3,7 @@
 ##### 小技巧
 ```linux
 遇到需要输入yes 或者 y 的命令，可以是用echo yes | rm -i aa.txt 
--i以交互模式运行
+-i 以交互模式运行
 ntsysv 看服务是否是开机启动
 cat /var/log/messages 查看系统日志
 cat /var/log/secure 用户登录日志
