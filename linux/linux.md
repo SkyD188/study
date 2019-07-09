@@ -1,6 +1,18 @@
 ### LINUX
 
+#### linux允许远程使用root账号
+
+```shell
+1.先用其他账号登录上去
+2.sudo passwd root 为管理员设置密码
+3.su 切换到管理员
+4.vi /etc/ssh/sshd_config 进去ssh配置文件
+5.复制 PermitRootLogin yes 加入到配置文件中
+6.systemctl restart ssh 或者 service ssh restart 重启服务
+```
+
 ##### 小技巧
+
 ```linux
 遇到需要输入yes 或者 y 的命令，可以是用echo yes | rm -i aa.txt 
 -i 以交互模式运行
@@ -278,5 +290,5 @@ top -n 1代表运行一次就停止，不再刷新，-n运行 数字代表运行
 
 
 
-## **lsb_release -a 版本信息 linux**
+## **lsb_release -a  linux版本信息**
 
