@@ -1,17 +1,6 @@
 ### 丰富的快捷键
 
-本 Markdown 编辑器支持丰富的格式快捷键，可以非常便捷、轻松的使用 Markdown 语言，形成优美的排版和内容格式。
-
-支持的快捷键有：
-
-* 加粗： `Ctrl/Cmd + B`
-* 标题： `Ctrl/Cmd + H`
-* 插入链接： `Ctrl/Cmd + K`
-* 插入代码： `Ctrl/Cmd + Shift + C`
-* 行内代码： `Ctrl/Cmd + Shift + K`
-* 插入图片： `Ctrl/Cmd + Shift + I`
-* 无序列表： `Ctrl/Cmd + Shift + L`
-* 撤销： `Ctrl/Cmd + Z`
+> Markdown 可以非常便捷、轻松的使用 Markdown 语言，形成优美的排版和内容格式。
 
 ### 常用语法
 
@@ -20,6 +9,7 @@
 > 语法格式：** '#'+'空格'+'文本' **
 
 # 一级标题
+
 ## 二级标题
 ### 三级标题
 #### 四级标题

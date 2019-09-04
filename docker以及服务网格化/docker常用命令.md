@@ -3,10 +3,11 @@
 #### 容器生命周期管理
 
 ```docker
-run 
+run 运行一个容器
 start/stop/restart 
 kill 杀掉一个容器
-rm
+rm 删除容器
+service 服务操作 常见的ls rm
 pause/unpause 暂停容器中所有的进程 以及 恢复容器中所有的进程。
 create 创建一个新容器但是不启动
 exec 进入容器
@@ -18,13 +19,23 @@ exec 进入容器
 ps （ps -a 查看所有容器）
 inspect 获取容器/镜像的元数据。
 top 查看容器中运行的进程信息，支持 ps 命令参数。
-attach
+attach 与exec一样是进入容器的命令，但是退出容器会导致容器停止运行，另外他是同步的，操作同一个容器会阻塞
 events 从服务器获取实时事件
 logs 日志
 wait 阻塞运行直到容器停止，然后打印出它的退出代码。
 export 将文件系统作为一个tar归档文件导出到STDOUT。
 port 列出指定的容器的端口映射，或者查找将PRIVATE_PORT NAT到面向公众的端口。
 cp 复制
+```
+
+#### docker自定义容器
+
+```docker
+docker commit -a="dhy" -m="del docs tomcat" 容器id dhy/tomcat:1.1
+docker commit -a "dhy" -m "del docs tomcat" 容器id dhy/tomcat:1.1 不加 "=" 也是可以的
+-a 表明自定义容器的作者
+-m 自定义容器的含义
+dhy/tomcat 自定义容器的名称
 ```
 
 #### 本地镜像操作
@@ -49,6 +60,16 @@ search 搜索docker仓库里的镜像
 login
 loginout
 ````
+
+#### docker数据卷
+
+```docker
+docker 数据卷
+-v /宿主机文件:/容器文件:ro 
+--volumes-from 容器id 表示继承那个容器的数据卷 
+数据卷默认是可读可写
+:ro 只读不可写
+```
 
 #### docker 命令高级用法
 
@@ -84,5 +105,23 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' con
 显示所有容器IP地址：docker inspect --format='{{.Name}} - {{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
 
 docker container update --restart=always 容器名字
+```
+
+#### Dockerfile
+
+```dockerfile
+FROM 基础镜像，表明镜像基于那个镜像
+MAINTAINER 作者
+RUN 容器构建运行命令
+EXPOSE 对外暴露的端口
+WORKDIR 容器进入的默认工作路径
+ENV 构建容器中设置环境变量
+ADD 文件拷贝加自动解压，自动处理url和解压tar
+COPY 单纯的拷贝文件到镜像中
+	COPY src test
+	COPY["src","test"]
+VOLUME 容器数据卷
+CMD 指定容器启动时要运行的命令，多个CMD只有最后一个生效（镜像最后指定会覆盖Dockerfile中的CMD）
+ENTRYPOINT 跟CMD一样，但是它会把命令拼接在一起，比CMD命令更强大
 ```
 

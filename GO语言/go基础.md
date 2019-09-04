@@ -1,3 +1,5 @@
+
+
 # Go基础
 
 ## Hello Go
@@ -173,7 +175,7 @@ func main(){
   case 3: fmt.Println("three")
   }
   //可以在同一个case语句中使用逗号来分隔多个表达式
-  switch time.Now().weekday(){
+  switch time.Now().Weekday(){
   case time.Saturday,time.Sunday:
     fmt.Println("it's the weekend")
   //这里也使用了default case
@@ -189,19 +191,20 @@ func main(){
     fmt.Println("it's after noon")
   }
   //类型switch比较了类型而非值
-  whatAmI := func(i interface{}){
-    switch t:=i.(type){
-    case bool:
-      fmt.Println("I'm a bool")
-    case int:
-      fmt.Println("I'm an int")
-    default:
-      fmt.Println("Don't know type %T\n",t)
-    }
-  }
-  whatAmI(true)
-  whatAmI(1)
-  whatAmI("hey")
+ whatAmI := func(i interface{}) {
+     //在switch中使用 变量名.(type) 查询变量是由哪个类型数据赋值
+		switch t := i.(type) {
+		case bool:
+			fmt.Println("I'm a bool")
+		case int:
+			fmt.Println("I'm an int")
+		default:
+			fmt.Printf("Don't know type %T\n", t)
+		}
+	}
+	whatAmI(true)
+	whatAmI(1)
+	whatAmI("hey")
 }
 ```
 
@@ -240,7 +243,7 @@ func main(){
 
 当使用fmt.Println方法打印时，数组将以[v1 v2 v3 ... ]的形式展现
 
-## Slices 切片，实际就是java ArrayList
+## Slices 切片
 
 slice是一个重要的数据类型，对于序列提供了比数组更强大的接口
 
@@ -362,8 +365,8 @@ func main(){
     fmt.Println("key:",k)
   }
   //range作用在string上将得到unicode code points，第一个值是字符的起始字节索引，第二个值是字符本身
-  for i,c:range "go" {
-    cmt.Println(i,c)
+  for i,c:range "go"{
+    fmt.Println(i,c)
   }
 }
 ```
@@ -433,7 +436,7 @@ func main(){
   sum(1,2)
   sum(1,2,3)
   //如果你已经在一个slice中定义了多个参数，可以使用func(slice...)来直接应用到变参函数中
-  nums :=[]int{1,2,3,4}
+  nums := []int{1,2,3,4}
   sum(nums...)
 }
 ```
@@ -522,7 +525,7 @@ func main(){
 
 zeroval没有改变main函数中i的值，而zeroptr会，因为它拥有指向变量i的内存地址。
 
-## Structs 结构体，实际就是javabean
+## Structs 结构体
 
 Go的Struct结构是字段类型的集合。对于从记录中将数据组织到一起很有帮助。
 
@@ -592,7 +595,7 @@ func main(){
 package main
 import "fmt"
 import "math"
-//这是一个geometry的基本接口，本例中将在rect类型和circle类型中实现这个接口
+
 type geometry interface{
   area() float64
   perim() float64
@@ -892,7 +895,7 @@ func main(){
   case res:=<-c2:
     fmt.Println(res)
   case <-time.After(time.Second*3):
-    fmt.Printnln("timeout 2")
+    fmt.Println("timeout 2")
   }
 }
 ```
@@ -1758,7 +1761,7 @@ func main(){
   fmt.Println(res.Fruits[0])
   //在上面的例子中我们经常使用bytes和字符串在标准输出上来进行数据和JSON形式的交互
   //我们也可以将JSON编码流入到os.Writers甚至HTTP响应体
-  enc:json.NewEncoder(os.Stdout)
+  enc:=json.NewEncoder(os.Stdout)
   d:=map[string]int{"apple":5,"lettuce":7}
   enc.Encode(d)
 }

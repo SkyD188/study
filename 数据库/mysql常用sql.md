@@ -5,12 +5,32 @@ select * from t_userlogin a
 where (a.username,a.phone) in (select username,phone from t_userlogin group by username,phone having count (*) > 1)
 ```
 
-2.删除表中多余的重复记录（多个字段），只留有userid最小的记录
+2.删除表中多余的重复记录（多个字段），只留有id最小的记录
 
 ```mysql
-delete from t_userlogin a
-where (a.username,a.phone) in (select username,phone from t_userlogin group by username,phone having count (*) > 1)
-and userid not in (select min(userid) from t_userlogin group by username,phone having count (*)>1)
+DELETE
+ FROM    t_score 
+WHERE
+    (xn, xq,xh,kcmc) IN ( SELECT * FROM (
+        SELECT
+            xn,xq,xh,kcmc
+        FROM
+            t_score
+        GROUP BY
+            xn,xq,xh,kcmc
+        HAVING
+            count(*) > 1
+    ) a)
+AND id NOT IN (SELECT * FROM (
+    SELECT
+        min(id)
+    FROM
+        t_score
+    GROUP BY
+        xn,xq,xh,kcmc
+    HAVING
+        count(*) > 1
+)b)
 ```
 
 3.插入其他表中不重复的数据
