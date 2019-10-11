@@ -1,4 +1,4 @@
-### Go常用到的
+### Go格式化
 
 ```go
 
@@ -28,21 +28,9 @@ fmt.Fprintln 把字符返回给一个文件（但不是写入文件）
 
 #### go库中常用的方法总结
 
-- os包
+- 操作数据库 mysql
 
-```go
-func Getwp() (dir string,err error) //获取当前目录，类似linux pwd
-func Chdir(dir string) error   //chdir将当前工作目录更改为dir目录．
-func Getwd() (dir string, err error)    //获取当前目录，类似linux中的pwd
-func Chmod(name string, mode FileMode) error     //更改文件的权限（读写执行，分为三类：all-group-owner）
-func Chown(name string, uid, gid int) error  //更改文件拥有者owner
-func Chtimes(name string, atime time.Time, mtime time.Time) error    //更改文件的访问时间和修改时间，atime表示访问时间，mtime表示更改时间
-func Clearenv()    //清除所有环境变量（慎用）
-func Environ() []string  //返回所有环境变量
-func Exit(code int)     //系统退出，并返回code，其中０表示执行成功并退出，非０表示错误并退出，其中执行Exit后程序会直接退出，defer函数不会执行．
-```
-
-#### 操作数据库 mysql
+现在常用xorm框架，如gorm,xorm等等
 
 ```go
 package main
@@ -118,7 +106,7 @@ type User struct {
 }
 ```
 
-#### 操作 json 数据
+- 操作 json 数据
 
 ```go
 package main
@@ -162,7 +150,9 @@ type Student struct {
 }
 ```
 
-#### 框架 iris
+- 框架 iris
+
+go 拥有许多好用的web框架，iris、beego、gin、echo其用法大体接近
 
 ```go
 package GETDemo
@@ -184,7 +174,7 @@ func main(){
 
 ```
 
-#### golang 操作redis
+- golang 操作redis
 
 ```go
 go redis有两套库
@@ -267,5 +257,30 @@ func checkErr(err error) bool {
 	return true
 }
 
+```
+
+- go操作消息队列
+
+首先要在服务器上安装nats
+
+```go
+
+//这是最简单的用法，需要可以去nats官网查找其他用法 https://github.com/nats-io/
+func main() {
+	var url = "nats://192.168.38.209:4222"
+	nc, err := nats.Connect(url)
+	if err != nil {
+		fmt.Println("错误", err)
+	}
+	//发布消息
+	nc.Publish("help", []byte{78, 78, 78})
+
+	//订阅消息
+	nc.Subscribe("help", func(msg *nats.Msg) {
+		fmt.Println(string(msg.Data))
+	})
+	//保证其他go协程可以一直保持连接
+	runtime.Goexit()
+}
 ```
 

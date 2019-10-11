@@ -39,6 +39,7 @@ cat /var/log/secure 用户登录日志
 centos7 查看ip的几种方式 ip addr , ifconfig , hostname -I
 yum list 插件名字（docker-ce）--showduplicates | sort -r 列出仓库所有的插件版本，并选择指定的安装并排序
 yum update 更新centos版本
+man 命令 查看命令所有的用法（比如 man ls，man date）
 ```
 
 ##### 定时任务
@@ -551,7 +552,7 @@ expect
  	非交互式的命令，具体请上网查
  	
 if case 
-	if 条件测试 then 命令序列 fi 
+	if 条件测试 ;then 命令序列 fi if和then在一行必须有分号
 	if then elseif then else fi
 	
 for

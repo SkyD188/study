@@ -46,8 +46,10 @@ rmi
 tag
 build 构建镜像
 history 查看指定镜像的创建历史。
-save 将指定镜像保存成 tar 归档文件。
-load 导入使用 docker save 命令导出的镜像。
+//把镜像打成压缩文件，适用迁移 （将指定镜像保存成 tar 归档文件）
+save (docker save 镜像名称or容器名称 | gzip > redis-latest.tar.gz)
+//把save打好的压缩文件加载成镜像 （导入使用 docker save 命令导出的镜像）
+load (docker load -i redis-latest.tar.gz)
 import 从归档文件中创建镜像。
 ```
 
@@ -56,6 +58,7 @@ import 从归档文件中创建镜像。
 ````docker
 info
 version
+//docker search redis --filter=stars=50 （–filter=stars=N 类似github starts次数大于多少的）
 search 搜索docker仓库里的镜像
 login
 loginout
@@ -93,7 +96,7 @@ docker cp docker的复制命令。可以容器复制到宿主机，也可以复�
 网络模式：docker的默认网络模式是网桥模式
 	host：docker会用宿主机的IP和端口，不会获得一个独立的network  namespace
 	container：这个模式指定新创建的容器和已经存在的一个容器共享一个Network Namespace，而不是和宿主机共享
-	none：这个模式有自己的独立的网络配置。但是不是docker提供的，需要自己手动配置
+	none：这个模式有自己的独立的网络配置。这种none的也就自己通过exec的方式访问
 	bridge：docker会为容器创建一个网络配置，并将docker容器链接到一个虚拟网桥上
 ```
 
@@ -117,11 +120,61 @@ EXPOSE 对外暴露的端口
 WORKDIR 容器进入的默认工作路径
 ENV 构建容器中设置环境变量
 ADD 文件拷贝加自动解压，自动处理url和解压tar
-COPY 单纯的拷贝文件到镜像中
+COPY 将文件和目录复制到容器的文件系统，文件和目录需位于相对于 Dockerfile 的路径中
 	COPY src test
 	COPY["src","test"]
 VOLUME 容器数据卷
 CMD 指定容器启动时要运行的命令，多个CMD只有最后一个生效（镜像最后指定会覆盖Dockerfile中的CMD）
 ENTRYPOINT 跟CMD一样，但是它会把命令拼接在一起，比CMD命令更强大
+```
+
+#### docker-compose
+
+```shell
+安装docker-compose
+    sudo yum -y install python-pip
+    sudo pip install docker-compose
+
+后台运行
+	docker-compose up -d
+	
+查看某个service的compose日志
+    #docker-compose logs <service名称>
+    docker-compose logs db
+    
+停止、开始、重启compose服务
+	#docker-compose.yml 目录下执行
+	docker-compose stop|start|restart
+	
+kill compose服务
+	docker-compose kill
+删除compose服务
+docker-compose rm
+
+构建服务
+	docker-compose build [options] [SERVICE...] 
+		–force-rm 删除构建过程中的临时容器。
+		–no-cache 构建镜像过程中不使用 cache（这将加长构建过程） 。
+		–pull 始终尝试通过 pull 来获取更新版本的镜像。
+		
+验证 Compose 文件格式是否正确，若正确则显示配置，若格式错误显示错误原因。 
+    #校验当前文件夹下的docker-compose.yml
+    docker-compose config
+
+此命令将会停止 up 命令所启动的容器，并移除网络 
+    #校验当前文件夹下的docker-compose.yml
+    docker-compose down
+
+进入指定的容器
+    docker-compose exec <service> /bin/sh
+
+获得一个命令的帮助
+    docker-compose 命令 help
+
+列出 Compose 文件中包含的镜像
+    docker-compose images
+
+暂停、恢复一个服务容器
+    docker-compose pause|unpause [SERVICE...]
 ```
 

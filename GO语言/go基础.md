@@ -8,7 +8,7 @@
 package main
 import "fmt"
 func main(){
-  fmt.Println("hello Go ！！")
+  fmt.Println("hello Go Go Go ！！")
 }
 ```
 
@@ -41,8 +41,6 @@ func main(){
 ```
 
 ## Variables 变量
-
-在Go中，变量被编译器显式的声明和使用，例如检查函数调用类型的正确性。
 
 ```go
 package main
@@ -97,7 +95,7 @@ func main(){
 }
 ```
 
-## For
+## For 循环结构
 
 for是Go中唯一的循环结构，下面是三种基本的for循环类型。
 
@@ -130,7 +128,7 @@ func main(){
 }
 ```
 
-## If/Else
+## If/Else 条件语句
 
 ```go
 package main
@@ -160,7 +158,7 @@ func main(){
 
 Go中没有三目if语句，所以对于最基本的条件也需要写完整的if语句。
 
-## Switch
+## Switch 条件语句
 
 ```go
 package main
@@ -394,7 +392,7 @@ func main(){
 }
 ```
 
-## Multiple Return Values
+## Multiple Return Values 多返回值，这是一个非常好用的特性
 
 Go内置支持了返回多个值。这一特点经常用于Go的习惯用法，例如同时返回结果和错误值
 
@@ -416,7 +414,7 @@ func main(){
 }
 ```
 
-## Variadic Functions
+## Variadic Functions 变参函数
 
 变参函数，可以使用任意数量的参数来进行调用。例如fmt.Println是一个常见的变参函数。
 
@@ -441,7 +439,7 @@ func main(){
 }
 ```
 
-## Closures
+## Closures 匿名函数
 
 Go支持匿名函数，它可以形成闭包。当你想要定义一个不记名的内部函数时，匿名函数就很有用了。
 
@@ -472,7 +470,7 @@ func main(){
 }
 ```
 
-## Recursion
+## Recursion 递归函数
 
 Go支持递归函数。下面是一个经典的斐波那契数列示例
 
@@ -494,8 +492,6 @@ func main(){
 ## Pointers 指针
 
 Go可以使用指针，让你在程序中传递值或记录的引用。
-
-下面通过两种方式的对比来展示指针的使用：`zeroval`和`zeroptr`
 
 ```go
 package main
@@ -557,7 +553,7 @@ func main(){
 }
 ```
 
-## Methods
+## Methods 方法，实际就是结构体的函数
 
 Go支持在结构体上定义方法。
 
@@ -587,7 +583,7 @@ func main(){
 }
 ```
 
-## Interfaces
+## Interfaces 接口
 
 接口是方法签名的命名集合。
 
@@ -635,7 +631,7 @@ func main(){
 }
 ```
 
-## Errors
+## Errors 错误
 
 在Go中，传递错误的惯用法是通过明确的，分离的返回值。这和Java活Ruby中的exception以及C中重载使用单个的结果/错误值不同。Go的方法使得很容易看出哪些函数返回错误，并使用与任何其他非错误任务相同的语言结构来处理它们。
 
@@ -699,7 +695,7 @@ func main(){
 }
 ```
 
-## Goroutines
+## Goroutines 协程
 
 goroutine是一个轻量级的执行线程。
 
@@ -730,7 +726,7 @@ func main(){
 
 当我们运行这个程序的时候，我们将首先看到阻塞调用，然后是两个goroutine的交错输出。这个交错反应了goroutine在Go运行时是并发执行的。
 
-## Channels
+## Channels 通道，go鼓励用这个进行同步
 
 Channel是连接并发执行的goroutine的管道。你可以从一个goroutine传递值到channel中，再在另一个goroutine接收它。
 
@@ -753,7 +749,7 @@ func main(){
 
 默认情况下，发送和接收在发送者和接受者都准备好之前阻塞。这个特性允许我们在程序结尾等待"ping"信息而无需使用其他的同步手段
 
-## Channel Buffering
+## Channel Buffering 缓冲通道
 
 默认下channel没有缓冲区，这意味着他们将只有在响应的接收者(<-chan)准备好时，才能允许发送(chan<-)。具有缓冲区的channel，接受有限个数的值，而无需相应的接收者。
 
@@ -800,7 +796,7 @@ func main(){
 
 如果你移除了<-done行，这个程序可能会在worker开始前就结束。
 
-## Channel Directions
+## Channel Directions 单向通道
 
 当把channel用作函数的参数时，你可以指定一个channel是否只发送或者只接收数据。这种特异性增加了程序的类型安全性。
 
@@ -825,7 +821,7 @@ func main(){
 }
 ```
 
-## Select
+## Select 处理多个协程
 
 Go的select让你能够等待多个channel操作。通过select结合goroutine和channel是Go的重要特色。
 
@@ -904,7 +900,7 @@ func main(){
 
 使用select超时模式需要在通道上进行结果通讯。一般情况下这是很好的主意，因为其他的重要Go特性基于通道和选择。我们将在之后看到有关的两个例子：timer和ticker
 
-## Non-Blocking Channel Operations
+## Non-Blocking Channel Operations 非阻塞通道
 
 channel上简单的发送和接收是阻塞的。然而，我们可以使用select和default子句来实现非阻塞发送、接收甚至非阻塞的多路选择。
 
@@ -1344,7 +1340,7 @@ func main() {
 
 运行项目显示基于gouroutine的状态管理完成了大约80,000操作。
 
-## Sorting
+## Sorting 排序
 
 sort包实现了内置和自定义类型的排序。首先看看内置类型的排序。
 
@@ -1574,7 +1570,7 @@ func main(){
 
 注意，获取长度和索引字符是工作在字节级别上的。Go使用UTF-8编码字符串。
 
-## String Formatting
+## String Formatting 格式化
 
 Go在经典的`printf`上提供了优秀的字符串格式化支持。这里有一些常见格式化的例子。
 
@@ -1837,6 +1833,8 @@ func main(){
 ## Time Formatting / Parsing
 
 Go支持时间格式化和解析，根据基于模式的布局。
+
+go 必须使用2006-01-02 15:04:05来进行格式化，这是go诞生的时间
 
 ```go
 package main
